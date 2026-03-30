@@ -25,6 +25,19 @@ export default function CartPage() {
 
   return (
     <div className="container-page py-12">
+      <p className="mb-6 rounded-xl border border-sky-400/20 bg-sky-400/10 px-4 py-3 text-sm leading-6 text-sky-100/90">
+        <span className="font-semibold text-white">Demo cart:</span> your items are saved in this
+        browser only. To buy, use{" "}
+        <span className="text-white/90">Order on WhatsApp</span> on any{" "}
+        <Link href="/products" className="text-emerald-200/90 underline-offset-2 hover:underline">
+          product page
+        </Link>{" "}
+        or{" "}
+        <Link href="/contact" className="text-emerald-200/90 underline-offset-2 hover:underline">
+          contact us
+        </Link>
+        .
+      </p>
       <div className="flex items-end justify-between gap-6">
         <div>
           <p className="text-sm font-medium text-emerald-200/90">Checkout</p>
@@ -52,6 +65,7 @@ export default function CartPage() {
                         src={product.images[0]?.src ?? "/products/laptop-1.svg"}
                         alt={product.name}
                         fill
+                        sizes="(max-width: 640px) 100vw, 144px"
                         className="object-cover"
                       />
                     </div>

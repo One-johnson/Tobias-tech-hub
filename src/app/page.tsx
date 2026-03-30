@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { products } from "@/lib/catalog";
 import { BrandsCarousel } from "@/components/home/brands-carousel";
 import { HeroCarousel } from "@/components/home/hero-carousel";
@@ -9,6 +10,12 @@ import { FaqSection } from "@/components/home/faq";
 import { CtaStrip } from "@/components/home/cta-strip";
 import { ReasonsSection } from "@/components/home/reasons-section";
 import { TestimonialsSection } from "@/components/home/testimonials-section";
+
+export const metadata: Metadata = {
+  title: "Powering your digital world",
+  description:
+    "Tobias Tech Hub—premium laptops, accessories, and networking in Accra, Ghana. Shop trusted brands with local support.",
+};
 
 export default function Home() {
   return (

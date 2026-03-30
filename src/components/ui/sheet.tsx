@@ -50,7 +50,7 @@ function SheetContent({
       <DialogPrimitive.Content
         data-slot="sheet-content"
         className={cn(
-          "fixed z-50 h-full w-[min(420px,100vw)] border border-white/10 bg-zinc-950/95 text-white shadow-2xl backdrop-blur",
+          "fixed z-[60] flex h-full w-[min(420px,100vw)] flex-col border border-white/10 bg-zinc-950/95 text-white shadow-2xl backdrop-blur outline-none pointer-events-auto",
           "data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:slide-in-from-right-1/2",
           "data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:slide-out-to-right-1/2",
           side === "left" && "left-0 top-0 border-r data-[state=open]:slide-in-from-left-1/2",

@@ -48,7 +48,13 @@ export function ShopByCategory() {
             className="group overflow-hidden rounded-2xl border border-white/10 bg-black/20 transition hover:bg-white/5"
           >
             <div className="relative aspect-[16/10] w-full">
-              <Image src={c.image} alt={c.title} fill className="object-cover" />
+              <Image
+                src={c.image}
+                alt={c.title}
+                fill
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 33vw, 400px"
+                className="object-cover"
+              />
               <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
             </div>
             <div className="p-6">

@@ -23,6 +23,13 @@ type CategoryFilter = ProductCategory | "All";
 type SortKey = "featured" | "price_asc" | "price_desc" | "rating_desc";
 type ViewMode = "carousel" | "grid";
 
+function sortLabel(sort: SortKey) {
+  if (sort === "featured") return "Featured";
+  if (sort === "price_asc") return "Price ↑";
+  if (sort === "price_desc") return "Price ↓";
+  return "Top rated";
+}
+
 function clampPrice(n: number) {
   if (!Number.isFinite(n)) return 0;
   return Math.max(0, Math.min(999999, Math.floor(n)));
@@ -63,17 +70,18 @@ export function ProductsGrid({
   const router = useRouter();
   const pathname = usePathname();
 
-  const [query, setQuery] = React.useState("");
-  const [category, setCategory] = React.useState<CategoryFilter>("All");
-  const [selectedBrands, setSelectedBrands] = React.useState<string[]>([]);
-  const [inStockOnly, setInStockOnly] = React.useState(false);
-  const [sort, setSort] = React.useState<SortKey>("featured");
-  const [minPrice, setMinPrice] = React.useState<number | undefined>(undefined);
-  const [maxPrice, setMaxPrice] = React.useState<number | undefined>(undefined);
-  const [view, setView] = React.useState<ViewMode>("carousel");
+  // Initialize from server URL props so the first client render matches SSR (avoids hydration mismatch).
+  const [query, setQuery] = React.useState(initialQuery ?? "");
+  const [category, setCategory] = React.useState<CategoryFilter>(initialCategory ?? "All");
+  const [selectedBrands, setSelectedBrands] = React.useState<string[]>(initialBrands ?? []);
+  const [inStockOnly, setInStockOnly] = React.useState(initialInStockOnly ?? false);
+  const [sort, setSort] = React.useState<SortKey>(initialSort ?? "featured");
+  const [minPrice, setMinPrice] = React.useState<number | undefined>(initialMinPrice);
+  const [maxPrice, setMaxPrice] = React.useState<number | undefined>(initialMaxPrice);
+  const [view, setView] = React.useState<ViewMode>(initialView ?? "carousel");
   const [showAdvanced, setShowAdvanced] = React.useState(false);
 
-  const serverBrandsKey = JSON.stringify(initialBrands);
+  const serverBrandsKey = JSON.stringify(initialBrands ?? []);
 
   React.useEffect(() => {
     const nextBrands = JSON.parse(serverBrandsKey) as string[];
@@ -206,8 +214,8 @@ export function ProductsGrid({
   }, [products]);
 
   return (
-    <div className="grid gap-8">
-      <div className="grid gap-4 rounded-2xl border border-white/10 bg-black/20 p-4 md:grid-cols-12">
+    <div className="grid min-w-0 gap-8">
+      <div className="grid min-w-0 max-w-full gap-4 rounded-2xl border border-white/10 bg-black/20 p-4 md:grid-cols-12">
         <div className="md:col-span-7">
           <div className="relative">
             <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-white/50" />
@@ -275,18 +283,20 @@ export function ProductsGrid({
                 ) : null}
               </div>
             </div>
-            <div className="grid gap-2 md:col-span-3">
+            <div className="grid min-w-0 gap-2 md:col-span-3">
               <p className="text-xs font-semibold text-white/60">Price (GHS)</p>
-              <div className="flex items-center gap-2">
+              <div className="flex min-w-0 flex-col gap-2 sm:flex-row sm:items-center">
                 <Input
                   inputMode="numeric"
                   placeholder="Min"
+                  className="min-w-0 flex-1"
                   value={typeof minPrice === "number" ? String(minPrice) : ""}
                   onChange={(e) => setMinPrice(e.target.value ? Number(e.target.value) : undefined)}
                 />
                 <Input
                   inputMode="numeric"
                   placeholder="Max"
+                  className="min-w-0 flex-1"
                   value={typeof maxPrice === "number" ? String(maxPrice) : ""}
                   onChange={(e) => setMaxPrice(e.target.value ? Number(e.target.value) : undefined)}
                 />
@@ -322,21 +332,32 @@ export function ProductsGrid({
             </div>
           </div>
         ) : null}
-        <div className="md:col-span-12">
-          <div className="flex flex-wrap items-center justify-between gap-3">
-            <p className="text-sm text-white/70">
+        <div className="min-w-0 md:col-span-12">
+          <div className="flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between sm:gap-3">
+            <p className="shrink-0 text-sm text-white/70">
               Showing <span className="font-semibold text-white">{filtered.length}</span>{" "}
               items
             </p>
-            <div className="flex items-center gap-2">
-              <Badge variant="neutral" className={cn(!query && "opacity-60")}>
-                Query: {query ? query : "—"}
+            <div className="flex min-w-0 w-full flex-wrap gap-2 sm:w-auto sm:justify-end">
+              <Badge
+                variant="neutral"
+                title={query ? `Query: ${query}` : undefined}
+                className={cn(
+                  "max-w-[min(100%,16rem)] min-w-0 justify-start truncate",
+                  !query && "opacity-60",
+                )}
+              >
+                Query: {query || "—"}
               </Badge>
-              <Badge variant="neutral">Category: {category}</Badge>
-              <Badge variant="neutral">Sort: {sort === "featured" ? "Featured" : sort}</Badge>
+              <Badge variant="neutral" className="shrink-0">
+                Category: {category}
+              </Badge>
+              <Badge variant="neutral" className="shrink-0">
+                Sort: {sortLabel(sort)}
+              </Badge>
             </div>
           </div>
-          <div className="mt-3 flex flex-wrap items-center justify-between gap-2">
+          <div className="mt-3 flex flex-col gap-2 min-[480px]:flex-row min-[480px]:flex-wrap min-[480px]:items-center min-[480px]:justify-between">
             <div className="flex flex-wrap gap-2">
               {(["featured", "price_asc", "price_desc", "rating_desc"] as const).map((s) => (
                 <Button
@@ -358,6 +379,7 @@ export function ProductsGrid({
             <Button
               size="sm"
               variant="ghost"
+              className="shrink-0 self-start min-[480px]:self-auto"
               onClick={() => {
                 setQuery("");
                 setCategory("All");
@@ -377,7 +399,7 @@ export function ProductsGrid({
 
       {filtered.length ? (
         view === "grid" ? (
-          <div className="mx-auto w-full max-w-[1100px] grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="mx-auto grid w-full max-w-[1100px] justify-items-center gap-6 max-sm:gap-5 sm:grid-cols-2 sm:justify-items-stretch lg:grid-cols-3">
             {filtered.map((p) => (
               <ProductCard key={p.id} product={p} />
             ))}
@@ -387,11 +409,11 @@ export function ProductsGrid({
             className="mx-auto w-full max-w-[1100px]"
             options={{ loop: filtered.length > 3, align: "center", containScroll: "trimSnaps" }}
           >
-            <CarouselContent className="px-2">
+            <CarouselContent className="gap-3 px-4 sm:gap-4 sm:px-2">
               {filtered.map((p) => (
                 <CarouselItem
                   key={p.id}
-                  className="flex-[0_0_78%] sm:flex-[0_0_46%] lg:flex-[0_0_28%]"
+                  className="flex min-w-0 flex-[0_0_68%] justify-center sm:flex-[0_0_46%] lg:flex-[0_0_28%]"
                 >
                   <ProductCard product={p} />
                 </CarouselItem>

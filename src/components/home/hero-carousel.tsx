@@ -89,6 +89,7 @@ export function HeroCarousel() {
                         src={s.imageSrc}
                         alt={s.imageAlt}
                         fill
+                        sizes="(max-width: 768px) 100vw, 58vw"
                         className="object-cover"
                         priority
                       />
@@ -180,6 +181,7 @@ export function HeroCarousel() {
                         src={s.imageSrc}
                         alt=""
                         fill
+                        sizes="(max-width: 768px) 100vw, 42vw"
                         className="object-cover opacity-30"
                         priority
                       />

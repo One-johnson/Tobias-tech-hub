@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -22,6 +23,22 @@ import {
 type PageProps = {
   params: { slug: string } | Promise<{ slug: string }>;
 };
+
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { slug } = await Promise.resolve(params);
+  const product = getProductBySlug(slug);
+  if (!product) {
+    return { title: "Product" };
+  }
+  return {
+    title: product.name,
+    description: product.shortDescription,
+    openGraph: {
+      title: product.name,
+      description: product.shortDescription,
+    },
+  };
+}
 
 export default async function ProductDetailsPage({ params }: PageProps) {
   const { slug } = await Promise.resolve(params);

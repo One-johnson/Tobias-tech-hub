@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { products, brands, categories } from "@/lib/catalog";
 import { ProductsGrid } from "@/components/catalog/products-grid";
 import { ProductsPageSupport } from "@/components/catalog/products-page-support";
@@ -12,6 +13,27 @@ type ProductsSearchParams = {
   max?: string;
   view?: string;
 };
+
+export async function generateMetadata({
+  searchParams,
+}: {
+  searchParams?: ProductsSearchParams | Promise<ProductsSearchParams>;
+}): Promise<Metadata> {
+  const sp = searchParams ? await Promise.resolve(searchParams) : undefined;
+  const initialCategory =
+    sp?.category && (categories as readonly string[]).includes(sp.category)
+      ? (sp.category as (typeof categories)[number])
+      : "All";
+
+  const title =
+    initialCategory === "All" ? "Products catalog" : `${initialCategory} · Catalog`;
+  const description =
+    initialCategory === "All"
+      ? "Browse laptops, accessories, monitors, storage, and networking gear in Accra. Filter, sort, and order via WhatsApp."
+      : `Shop ${initialCategory.toLowerCase()} from Tobias Tech Hub in Accra. Compare brands, prices, and stock—confirm on WhatsApp.`;
+
+  return { title, description };
+}
 
 export default async function ProductsPage({
   searchParams,
@@ -55,7 +77,7 @@ export default async function ProductsPage({
             : "Explore curated options with premium quality and support.";
 
   return (
-    <div className="container-page py-12">
+    <div className="container-page min-w-0 py-12">
       <div className="mb-8">
         <p className="text-sm font-medium text-emerald-200/90">Catalog</p>
         <h1 className="mt-2 text-3xl font-semibold tracking-tight text-white md:text-4xl">
