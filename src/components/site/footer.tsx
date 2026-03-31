@@ -53,11 +53,22 @@ export function SiteFooter() {
                     Contact
                   </Link>
                 </li>
+                <li>
+                  <Link className="hover:text-white" href="/privacy">
+                    Privacy
+                  </Link>
+                </li>
+                <li>
+                  <Link className="hover:text-white" href="/returns">
+                    Delivery &amp; returns
+                  </Link>
+                </li>
               </ul>
             </div>
             <div>
               <p className="text-sm font-semibold text-white/90">Account</p>
-              <ul className="mt-3 space-y-2 text-sm text-white/70">
+              <p className="mt-1 text-xs text-white/45">Demo (local browser only)</p>
+              <ul className="mt-2 space-y-2 text-sm text-white/70">
                 <li>
                   <Link className="hover:text-white" href="/account/sign-in">
                     Sign in

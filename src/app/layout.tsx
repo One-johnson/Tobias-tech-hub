@@ -1,18 +1,29 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { Providers } from "@/components/providers";
+import { SiteAnalytics } from "@/components/site/analytics";
 import { AppShell } from "@/components/site/shell";
+import { getMetadataBase, getSiteOrigin } from "@/lib/env-public";
+
+const siteDescription =
+  "Premium laptops, accessories, and networking devices in Accra, Ghana. Powering your digital world.";
 
 export const metadata: Metadata = {
-  title: "Tobias Tech Hub | Accra, Ghana",
-  description:
-    "Premium laptops, accessories, and networking devices in Accra, Ghana. Powering your digital world.",
-  metadataBase: new URL("https://tobiastechhub.com"),
+  metadataBase: getMetadataBase(),
+  title: {
+    default: "Tobias Tech Hub | Accra, Ghana",
+    template: "%s · Tobias Tech Hub",
+  },
+  description: siteDescription,
+  icons: {
+    icon: [{ url: "/logo.png", type: "image/png" }],
+    shortcut: "/logo.png",
+    apple: "/logo.png",
+  },
   openGraph: {
     title: "Tobias Tech Hub | Accra, Ghana",
-    description:
-      "Premium laptops, accessories, and networking devices in Accra, Ghana. Powering your digital world.",
-    url: "https://tobiastechhub.com",
+    description: siteDescription,
+    url: getSiteOrigin(),
     siteName: "Tobias Tech Hub",
     type: "website",
   },
@@ -33,6 +44,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="h-full antialiased">
       <body className="min-h-full flex flex-col">
+        <SiteAnalytics />
         <Providers>
           <AppShell>{children}</AppShell>
         </Providers>

@@ -11,6 +11,7 @@ export function SiteLogo({ className }: { className?: string }) {
           src="/logo.png"
           alt="Tobias Tech Hub logo"
           fill
+          sizes="44px"
           className="object-cover"
           priority
         />

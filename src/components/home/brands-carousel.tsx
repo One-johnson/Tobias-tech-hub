@@ -49,6 +49,7 @@ export function BrandsCarousel() {
                       src={b.src}
                       alt={`${b.name} logo`}
                       fill
+                      sizes="128px"
                       className="object-contain invert"
                     />
                   </div>

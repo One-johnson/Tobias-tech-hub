@@ -1,5 +1,6 @@
 "use client";
 
+import * as React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { LogOut, Menu, ShoppingCart, User } from "lucide-react";
@@ -43,6 +44,9 @@ function NavLink({ href, children }: { href: string; children: React.ReactNode }
 
 export function SiteNavbar({ cartCount = 0 }: { cartCount?: number }) {
   const { user, signOut } = useAuth();
+  const [mobileOpen, setMobileOpen] = React.useState(false);
+  const closeMobile = React.useCallback(() => setMobileOpen(false), []);
+
   return (
     <header className="sticky top-0 z-40 border-b border-white/10 bg-black/35 backdrop-blur">
       <div className="container-page flex h-16 items-center justify-between gap-4">
@@ -105,45 +109,69 @@ export function SiteNavbar({ cartCount = 0 }: { cartCount?: number }) {
           )}
         </div>
 
-        <Sheet>
+        <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
           <SheetTrigger asChild>
             <Button variant="outline" size="icon" className="md:hidden" aria-label="Open menu">
               <Menu className="h-4 w-4" />
             </Button>
           </SheetTrigger>
-          <SheetContent side="right">
-            <SheetHeader>
+          <SheetContent
+            side="right"
+            className="gap-0 p-0"
+            onOpenAutoFocus={(e) => e.preventDefault()}
+          >
+            <SheetHeader className="border-b border-white/10 px-6 pb-4 pt-6">
               <SheetTitle>Menu</SheetTitle>
             </SheetHeader>
-            <SheetBody className="flex flex-col gap-4">
+            <SheetBody className="flex flex-1 flex-col gap-4 overflow-y-auto py-6">
               {nav.map((i) => (
                 <Link
                   key={i.href}
                   href={i.href}
-                  className="rounded-lg border border-white/10 bg-white/5 px-4 py-3 text-sm font-medium text-white/90 hover:bg-white/10"
+                  onClick={closeMobile}
+                  className="touch-manipulation rounded-lg border border-white/10 bg-white/5 px-4 py-3 text-sm font-medium text-white/90 hover:bg-white/10 active:bg-white/15"
                 >
                   {i.label}
                 </Link>
               ))}
               <div className="grid grid-cols-2 gap-2 pt-2">
                 <Button asChild variant="secondary">
-                  <Link href="/products">Shop</Link>
+                  <Link href="/products" onClick={closeMobile} className="touch-manipulation">
+                    Shop
+                  </Link>
                 </Button>
                 <Button asChild variant="outline">
-                  <Link href="/contact">Contact</Link>
+                  <Link href="/contact" onClick={closeMobile} className="touch-manipulation">
+                    Contact
+                  </Link>
                 </Button>
               </div>
               <div className="grid grid-cols-2 gap-2">
                 <Button asChild variant="outline">
-                  <Link href="/cart">Cart</Link>
+                  <Link href="/cart" onClick={closeMobile} className="touch-manipulation">
+                    Cart
+                  </Link>
                 </Button>
                 {user ? (
-                  <Button variant="ghost" onClick={() => signOut()}>
+                  <Button
+                    variant="ghost"
+                    className="touch-manipulation"
+                    onClick={() => {
+                      signOut();
+                      closeMobile();
+                    }}
+                  >
                     Sign out
                   </Button>
                 ) : (
                   <Button asChild variant="ghost">
-                    <Link href="/account/sign-in">Account</Link>
+                    <Link
+                      href="/account/sign-in"
+                      onClick={closeMobile}
+                      className="touch-manipulation"
+                    >
+                      Account
+                    </Link>
                   </Button>
                 )}
               </div>

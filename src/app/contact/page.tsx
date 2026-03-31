@@ -1,5 +1,14 @@
+import type { Metadata } from "next";
+import Link from "next/link";
+
 import { ContactForm } from "@/components/contact/contact-form";
-import { WHATSAPP_PHONE_E164 } from "@/lib/site";
+import { whatsappUrl, WHATSAPP_PHONE_E164 } from "@/lib/site";
+
+export const metadata: Metadata = {
+  title: "Contact",
+  description:
+    "Reach Tobias Tech Hub in Accra for quotes, delivery, and product advice—WhatsApp, phone, or email.",
+};
 
 export default function ContactPage() {
   return (
@@ -9,7 +18,21 @@ export default function ContactPage() {
         Contact Tobias Tech Hub
       </h1>
       <p className="mt-3 max-w-2xl text-white/70">
-        Reach us for product inquiries, quotes, delivery details, or recommendations.
+        Reach us for product inquiries, quotes, delivery details, or recommendations. For the
+        fastest reply in Accra, WhatsApp is usually best—we typically respond during business
+        hours.
+      </p>
+      <p className="mt-3 max-w-2xl text-sm leading-7 text-white/55">
+        Prefer not to wait on the form?{" "}
+        <Link
+          href={whatsappUrl("Hi Tobias Tech Hub, I’d like to get in touch about products.")}
+          className="text-emerald-200/90 underline-offset-4 hover:underline"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Message us on WhatsApp
+        </Link>
+        .
       </p>
 
       <div className="mt-10 grid gap-8 md:grid-cols-12">

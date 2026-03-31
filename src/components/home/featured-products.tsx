@@ -69,12 +69,12 @@ export function FeaturedProducts({ products }: { products: Product[] }) {
       </div>
 
       <div className="mt-8">
-        <Carousel options={{ loop: selection.length > 3, align: "start" }}>
-          <CarouselContent>
+        <Carousel options={{ loop: selection.length > 3, align: "center" }}>
+          <CarouselContent className="gap-3 px-4 sm:gap-4 sm:px-0">
             {selection.map((p) => (
               <CarouselItem
                 key={p.id}
-                className="flex-[0_0_85%] sm:flex-[0_0_55%] lg:flex-[0_0_33%]"
+                className="flex min-w-0 flex-[0_0_68%] justify-center sm:flex-[0_0_55%] lg:flex-[0_0_33%]"
               >
                 <ProductCard product={p} />
               </CarouselItem>

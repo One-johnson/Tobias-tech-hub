@@ -1,8 +1,9 @@
 import type { Product } from "@/lib/catalog";
+import { getSiteOrigin } from "@/lib/env-public";
 import { formatGHS } from "@/lib/format";
 
 /** Business WhatsApp in E.164 form (include country code, with leading +). */
-export const WHATSAPP_PHONE_E164 = "+233553301044" as const;
+export const WHATSAPP_PHONE_E164 = "+233558607836" as const;
 
 export function whatsappUrl(message: string) {
   const digits = WHATSAPP_PHONE_E164.replace(/\D/g, "");
@@ -10,9 +11,7 @@ export function whatsappUrl(message: string) {
 }
 
 function productPageLink(product: Product) {
-  const base = process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "");
-  if (base) return `${base}/products/${product.slug}`;
-  return `/products/${product.slug}`;
+  return `${getSiteOrigin()}/products/${product.slug}`;
 }
 
 export function buildProductOrderMessage(product: Product) {

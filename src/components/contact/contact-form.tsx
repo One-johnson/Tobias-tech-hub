@@ -18,6 +18,10 @@ export function ContactForm() {
         setStatus("sent");
       }}
     >
+      <p className="rounded-lg border border-amber-400/25 bg-amber-400/10 px-3 py-2 text-xs leading-5 text-amber-100/90">
+        <span className="font-semibold text-amber-50">Demo form:</span> submissions are not emailed
+        yet. For a real inquiry, use WhatsApp or phone on this page.
+      </p>
       <div className="grid gap-2">
         <Label htmlFor="name">Name</Label>
         <Input id="name" name="name" placeholder="Your name" required />
@@ -45,7 +49,7 @@ export function ContactForm() {
         <Button type="submit">{status === "sent" ? "Sent" : "Send message"}</Button>
         {status === "sent" ? (
           <p className="text-sm text-emerald-200/90">
-            Message queued. We’ll get back to you shortly.
+            Thanks—this demo only shows a success state. Message us on WhatsApp to reach the team.
           </p>
         ) : (
           <p className="text-sm text-white/60">We typically respond within business hours.</p>

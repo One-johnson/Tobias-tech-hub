@@ -1,3 +1,11 @@
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "About us",
+  description:
+    "Tobias Tech Hub in Accra, Ghana: premium laptops, accessories, and networking with trusted guidance.",
+};
+
 export default function AboutPage() {
   return (
     <div className="container-page py-12">
@@ -10,6 +18,11 @@ export default function AboutPage() {
         computer accessories, and networking devices—curated for performance, reliability, and
         value. Our mission is simple: help customers power their digital world with premium tech
         and trustworthy support.
+      </p>
+      <p className="mt-4 max-w-3xl text-sm leading-7 text-white/60">
+        Prices and stock shown on our website are guides. We always confirm availability, final
+        pricing, and payment options with you on WhatsApp or phone before you commit—especially
+        for high-value items and business orders.
       </p>
 
       <div className="mt-10 grid gap-6 md:grid-cols-3">
